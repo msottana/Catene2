@@ -116,7 +116,7 @@ public class Catene2 {
     }
 
     public static void main(String[] args) {
-        int n = 12;
+        int n = 1;
         long startTime = System.currentTimeMillis();
         long stopTime;
         long elapsedTime;
