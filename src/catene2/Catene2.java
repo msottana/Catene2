@@ -44,15 +44,25 @@ public class Catene2 {
         }
         //gruppi corrisponde all'insieme u
         gruppi = createGroups(ret.ro, nodi);
+        System.out.println("i gruppi sono" + gruppi);
         s.add(gruppi.remove(gen.nextInt(gruppi.size())));
         while (!gruppi.isEmpty()) {
             ArrayList<Integer> gruppoU = gruppi.remove(gen.nextInt(gruppi.size()));
+            System.out.println("il gruppo u scelto é" + gruppoU); 
             ArrayList<Integer> gruppoS = s.get(gen.nextInt(s.size()));
+            System.out.println("il gruppo s scelto é" + gruppoS); 
             s.add(gruppoU);
             int a = gruppoS.get(gen.nextInt(gruppoS.size()));
+            System.out.println("a é " + a );
             int b = gruppoU.get(gen.nextInt(gruppoU.size()));
+            System.out.println("b é " + b);
             double pesoInverso = rinomine(a, b, ret.pi, ret.chain, ret.ro);
-            rinomineInverse(b, a, ret.pi, ret.chain, ret.ro, pesoInverso);
+            if(((gruppoS.size()/2)) > 0){
+                int c = gruppoS.get(2*(gen.nextInt((gruppoS.size()/2))));
+                rinomineInverse(b, c, ret.pi, ret.chain, ret.ro, pesoInverso);
+            }
+            else
+                rinomineInverse(b, a, ret.pi, ret.chain, ret.ro, pesoInverso);
         }
         boolean gruppoDispari = false;
         int i = 0;
@@ -60,12 +70,19 @@ public class Catene2 {
             gruppoDispari = s.get(i).size() % 2 != 0;
             i++;
         }
+        System.out.println("c'é un gruppo dispari?" + gruppoDispari);
+                
         if(!gruppoDispari) {
             ArrayList<Integer> gruppoConnesso = s.get(gen.nextInt(s.size()));
             int a = gruppoConnesso.get(gen.nextInt(gruppoConnesso.size()));
             int b = ret.ro[a];
             double pesoInverso = rinomine(a, b, ret.pi, ret.chain, ret.ro);
-            rinomineInverse(b, a, ret.pi, ret.chain, ret.ro, pesoInverso);
+            if(((gruppoConnesso.size()/2)) > 0){
+                int c = gruppoConnesso.get(2*(gen.nextInt((gruppoConnesso.size()/2))));
+                rinomineInverse(b, c, ret.pi, ret.chain, ret.ro, pesoInverso);
+            }
+            else
+                rinomineInverse(b, a, ret.pi, ret.chain, ret.ro, pesoInverso);
         }
         return ret;
     }
@@ -74,8 +91,8 @@ public class Catene2 {
     public static ArrayList<ArrayList<Integer>> createGroups(int[] ro, ArrayList<Integer> nodi) {
         ArrayList<ArrayList<Integer>> gruppi;
         gruppi = new ArrayList<>();
-        int i = 0;
         while (!nodi.isEmpty()) {
+            int i = nodi.get((Integer) 0);
             int r = ro[i];
             int nIniz = i;
             int rIniz = r;
@@ -83,19 +100,17 @@ public class Catene2 {
             gruppo = new ArrayList<>();
             gruppi.add(gruppo);
             do {
-                gruppo.add(i);
-                nodi.remove((Integer) i);//n è l'etichetta, voglio togliere il nodo chiamato n non quello alla posizione n
+                gruppo.add((Integer) i);//n è l'etichetta, voglio togliere il nodo chiamato n non quello alla posizione n
+                nodi.remove((Integer) i);
                 i = r;
                 r = ro[r];
             } while (i != nIniz && r != rIniz);
-            i++;
         }
         return gruppi;
     }
 
     public static void main(String[] args) {
-        // TODO code application logic here
-        int n = 5;
+        int n = 4;
         long startTime = System.currentTimeMillis();
         long stopTime;
         long elapsedTime;
@@ -142,13 +157,13 @@ public class Catene2 {
         bR = ro[temp];
         while (a != aR || b != bR) {
             chain[aR][bR] = chain[a][b];
-            System.out.println("prima rate =" + chain[aR][bR] + "tra archi" + aR + bR);
+            System.out.println("PRIMA rate =" + chain[aR][bR] + "tra archi" + aR + bR);
             chain[ro[bR]][ro[aR]] = chain[ro[b]][ro[a]];
             System.out.println("SECONDA rate =" + chain[ro[bR]][ro[aR]] + "tra archi" + ro[bR] +ro[aR]);
             aR = ro[aR];
             bR = ro[bR];
-            System.out.println("ro aR "+ro[aR]);
-            System.out.println("ro bR "+ro[bR]);
+            System.out.println("ro aR "+ aR);
+            System.out.println("ro bR "+ bR);
         }
         System.out.println(" rate INVERSA =" + chain[ro[b]][ro[a]]);
         return chain[ro[b]][ro[a]];
@@ -158,33 +173,22 @@ public class Catene2 {
         int bR = ro[a];
         int temp;
         chain[a][b] = pesoInverso;
+        System.out.println("INVERSIONE prima rate =" + chain[a][b] + "tra archi" + a + b);
         chain[aR][bR] = pi[a] * chain[a][b] / pi[b];
+        System.out.println("INVERSIONE seconda rate =" + chain[aR][bR] + "tra archi" + aR + bR);
         temp = aR;
         aR = ro[bR];
         bR = ro[temp];
         while (a != aR || b != bR) {
             chain[aR][bR] = chain[a][b];
+            System.out.println("INVERSIONE PRIMA rate =" + chain[aR][bR] + "tra archi" + aR + bR);
             chain[ro[bR]][ro[aR]] = chain[ro[b]][ro[a]];
+            System.out.println("INVERSIONE SECONDA rate =" + chain[ro[bR]][ro[aR]] + "tra archi" + ro[bR] +ro[aR]);
             aR = ro[aR];
             bR = ro[bR];
+            System.out.println("INVERSIONE ro aR "+ aR);
+            System.out.println("INVERSIONE ro bR "+ bR);
         }
-    }
-
-    //trova il gruppo di rinomine associate a n
-    public static ArrayList<Integer> findGroup(int[] ro, int n, ArrayList<Integer> nodi) {
-        ArrayList<Integer> gruppo;
-        int r = ro[n];
-        int nIniz = n;
-        int rIniz = r;
-        gruppo = new ArrayList<>();
-        do {
-            System.out.println(n + " " + r);
-            gruppo.add(n);
-            nodi.remove((Integer) n);//n è l'etichetta, voglio togliere il nodo chiamato n non quello alla posizione n
-            n = r;
-            r = ro[r];
-        } while (n != nIniz && r != rIniz);
-        return gruppo;
     }
 }
 
