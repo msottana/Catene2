@@ -10,7 +10,7 @@ import java.util.Random;
 
 /**
  *
- * @author Matteo
+ * @author Matteo e Giulia
  */
 public class Catene2 {
 
