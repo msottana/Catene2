@@ -39,7 +39,10 @@ public class Catene2 {
             if (ret.pi[i] == 0) {
                 ret.pi[i] = gen.nextDouble();
             }
-            ret.pi[ret.ro[i]] = ret.pi[i];
+            int a = i;
+            int b = ret.ro[i];
+            while (a != i || b != ret.ro[i])
+                ret.pi[ret.ro[i]] = ret.pi[i];
             nodi.add(i);
         }
         //gruppi corrisponde all'insieme u
