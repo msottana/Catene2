@@ -41,8 +41,11 @@ public class Catene2 {
             }
             int a = i;
             int b = ret.ro[i];
-            while (a != i || b != ret.ro[i])
-                ret.pi[ret.ro[i]] = ret.pi[i];
+            do {
+                ret.pi[b] = ret.pi[a];
+                a = b;
+                b = ret.ro[b];
+            }while (a != i && b != ret.ro[i]);
             nodi.add(i);
         }
         //gruppi corrisponde all'insieme u
