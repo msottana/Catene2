@@ -110,7 +110,7 @@ public class Catene2 {
     }
 
     public static void main(String[] args) {
-        int n = 4;
+        int n = 12;
         long startTime = System.currentTimeMillis();
         long stopTime;
         long elapsedTime;
@@ -149,21 +149,18 @@ public class Catene2 {
         int bR = ro[a];
         int temp;
         chain[a][b] = gen.nextDouble();
-        System.out.println("prima rate =" + chain[a][b] + "tra archi" + a + b);
+        System.out.println("RATE PARTENZA");
+        System.out.println("rate generata di andata" + chain[a][b]);
         chain[aR][bR] = pi[a] * chain[a][b] / pi[b];
-        System.out.println("seconda rate =" + chain[aR][bR] + "tra archi" + aR + bR);
+        System.out.println("rate generata di ritorno" + chain[aR][bR]);
         temp = aR;
         aR = ro[bR];
         bR = ro[temp];
         while (a != aR || b != bR) {
             chain[aR][bR] = chain[a][b];
-            System.out.println("PRIMA rate =" + chain[aR][bR] + "tra archi" + aR + bR);
             chain[ro[bR]][ro[aR]] = chain[ro[b]][ro[a]];
-            System.out.println("SECONDA rate =" + chain[ro[bR]][ro[aR]] + "tra archi" + ro[bR] +ro[aR]);
             aR = ro[aR];
             bR = ro[bR];
-            System.out.println("ro aR "+ aR);
-            System.out.println("ro bR "+ bR);
         }
         System.out.println(" rate INVERSA =" + chain[ro[b]][ro[a]]);
         return chain[ro[b]][ro[a]];
@@ -172,22 +169,19 @@ public class Catene2 {
         int aR = ro[b];
         int bR = ro[a];
         int temp;
+        System.out.println("seconda parte");
+        System.out.println("rate generata di ritorno" + pesoInverso);
         chain[a][b] = pesoInverso;
-        System.out.println("INVERSIONE prima rate =" + chain[a][b] + "tra archi" + a + b);
         chain[aR][bR] = pi[a] * chain[a][b] / pi[b];
-        System.out.println("INVERSIONE seconda rate =" + chain[aR][bR] + "tra archi" + aR + bR);
+        System.out.println("rate generata di andata" + chain[aR][bR]);
         temp = aR;
         aR = ro[bR];
         bR = ro[temp];
         while (a != aR || b != bR) {
             chain[aR][bR] = chain[a][b];
-            System.out.println("INVERSIONE PRIMA rate =" + chain[aR][bR] + "tra archi" + aR + bR);
             chain[ro[bR]][ro[aR]] = chain[ro[b]][ro[a]];
-            System.out.println("INVERSIONE SECONDA rate =" + chain[ro[bR]][ro[aR]] + "tra archi" + ro[bR] +ro[aR]);
             aR = ro[aR];
             bR = ro[bR];
-            System.out.println("INVERSIONE ro aR "+ aR);
-            System.out.println("INVERSIONE ro bR "+ bR);
         }
     }
 }
