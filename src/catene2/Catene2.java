@@ -95,7 +95,7 @@ public class Catene2 {
 
     public static void main(String[] args) {
         // TODO code application logic here
-        int n = 10;
+        int n = 5;
         long startTime = System.currentTimeMillis();
         long stopTime;
         long elapsedTime;
